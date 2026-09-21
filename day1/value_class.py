@@ -1,3 +1,4 @@
+import math
 class Value:
     def __init__(self, data, _prev=(), _op=''):
         self.data = data
@@ -69,3 +70,10 @@ class Value:
         self.grad = 1
         for v in reversed(topo):
             v._backward()
+
+    def tanh(self):
+        out = Value(math.tanh(self.data), (self, ), 'tanh')
+        def _backward():
+            self.grad += out.grad * (1 - out**2)
+        out._backward = _backward
+        return out
