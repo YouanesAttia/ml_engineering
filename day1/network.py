@@ -21,7 +21,7 @@ class Layer:
         outs = [n(x) for n in self.neurons]
         return outs[0] if len(outs) == 1 else outs
     def parameters(self):
-        return [neuron.parameters() for neuron in self.neurons]
+        return [p for neuron in self.neurons for p in neuron.parameters()]
 class MLP:
     def __init__(self, nin, nouts):
         sz = [nin] + nouts
@@ -31,4 +31,4 @@ class MLP:
             x = layer(x)
         return x
     def parameters(self):
-        return [layer.parameters() for layer in self.layers]
+        return [p for layer in self.layers for p in layer.parameters()]
