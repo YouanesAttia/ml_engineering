@@ -11,13 +11,17 @@ class Neuron:
         out = act.tanh()
         return out
 
+    def parameters(self):
+        return self.weights + [self.bias]
+
 class Layer:
     def __init__(self, nin, nouts):
         self.neurons = [Neuron(nin) for _ in range(nouts)]
     def __call__(self, x):
         outs = [n(x) for n in self.neurons]
         return outs[0] if len(outs) == 1 else outs
-
+    def parameters(self):
+        return [neuron.parameters() for neuron in self.neurons]
 class MLP:
     def __init__(self, nin, nouts):
         sz = [nin] + nouts
@@ -26,3 +30,5 @@ class MLP:
         for layer in self.layers:
             x = layer(x)
         return x
+    def parameters(self):
+        return [layer.parameters() for layer in self.layers]
