@@ -13,7 +13,7 @@ class Neuron:
 
 class Layer:
     def __init__(self, nin, nouts):
-        self.neurons = [Neuron[nin] for _ in range(nouts)]
+        self.neurons = [Neuron(nin) for _ in range(nouts)]
     def __call__(self, x):
         outs = [n(x) for n in self.neurons]
         return outs[0] if len(outs) == 1 else outs
@@ -23,6 +23,6 @@ class MLP:
         sz = [nin] + nouts
         self.layers = [Layer(sz[i], sz[i+1]) for i in range(len(nouts))]
     def __call__(self, x):
-        for layer in self.layer:
+        for layer in self.layers:
             x = layer(x)
         return x
